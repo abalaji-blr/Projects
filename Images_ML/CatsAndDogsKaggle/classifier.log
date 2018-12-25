@@ -1,0 +1,12 @@
+18750
+Tuning parameters...
+Best hyperparameter : {'C': 0.01}
+              precision    recall  f1-score   support
+
+         cat       0.98      0.99      0.98      3165
+         dog       0.99      0.98      0.98      3085
+
+   micro avg       0.98      0.98      0.98      6250
+   macro avg       0.98      0.98      0.98      6250
+weighted avg       0.98      0.98      0.98      6250
+

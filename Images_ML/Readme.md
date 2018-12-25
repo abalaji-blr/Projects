@@ -12,3 +12,10 @@
    * Classification based on **Feature Extraction using VGG16, Accuracy : 97%**
 
    * Store the model (in HDF5 format) and load the weights for prediction.
+
+### Cats and Dogs : Kaggle dataset
+
+  * **Feature extraction using ResNet50**
+  * **Classification based on the extracted features using Logistics Regression. Accuracy: 98%**
+
+  
