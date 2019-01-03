@@ -18,4 +18,9 @@
   * **Feature extraction using ResNet50**
   * **Classification based on the extracted features using Logistics Regression. Accuracy: 98%**
 
-  
+
+### Misc. Resources
+  * GoogLe Net - [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)
+  * GoogLe Net - [Slide Deck, Need of Inception Module](https://pdfs.semanticscholar.org/0b99/d677883883584d9a328f6f2d54738363997a.pdf)
+  * ResNet
+  * [Tiny ImageNet Dataset from Stanford CS231N course](https://tiny-imagenet.herokuapp.com/)
