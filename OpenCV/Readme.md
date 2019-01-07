@@ -13,8 +13,8 @@
 ### Detections
 
 #### Using Haar Cascades
-    * [What is Haar Cascade?](https://www.quora.com/What-is-haar-cascade)
-    * [How to make a Custom Haar Cascade Classifier](https://www.quora.com/How-do-I-make-a-Haar-cascade-classifier)
-    * Face and Eye Detection using Haar Cascades.
+    *  [What is Haar Cascade?](https://www.quora.com/What-is-haar-cascade)
+    *  [How to make a Custom Haar Cascade Classifier](https://www.quora.com/How-do-I-make-a-Haar-cascade-classifier)
+    *  Face and Eye Detection using Haar Cascades.
 
 #### Using HOG (Histogram of Oriented Gradients)
