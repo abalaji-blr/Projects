@@ -20,6 +20,11 @@
 
 
 ### Misc. Resources
+  * VGG16
+  * LeNet
+      * Used of MNIST - for Digit and Character Recognition
+      * [For Demo, Architecture, Publications, Visit Yann Lecun website ](http://yann.lecun.com/exdb/lenet/)
+      * 2 sets of Conv -> Relu -> Pool layers
   * GoogLe Net - [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)
   * GoogLe Net - [Slide Deck, Need of Inception Module](https://pdfs.semanticscholar.org/0b99/d677883883584d9a328f6f2d54738363997a.pdf)
   * ResNet
