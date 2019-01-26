@@ -1,10 +1,10 @@
-## Projects related to Image Classification
+# Projects related to Image Classification
 
-### MNIST dataset
+## MNIST dataset
   * Digit Classification using **Neural Net, Accuracy: 92%**
   * Digit Classification using **LeNet, Accuracy : 98%**
 
-### CatsDogsPanda dataset
+## CatsDogsPanda dataset
    * Image Classification using pixel intensity, **using KNN, Accuracy: 41 %**
    * Classification using **simple CNN (using CONV layer only), Accuracy: 66 %**
    * Classification using **mini VGG Net ( using Conv + MaxPool ), Accuracy: 69%**
@@ -13,19 +13,36 @@
 
    * Store the model (in HDF5 format) and load the weights for prediction.
 
-### Cats and Dogs : Kaggle dataset
+## Cats and Dogs : Kaggle dataset
 
   * **Feature extraction using ResNet50**
   * **Classification based on the extracted features using Logistics Regression. Accuracy: 98%**
 
 
-### Misc. Resources
-  * VGG16
-  * LeNet
-      * Used of MNIST - for Digit and Character Recognition
-      * [For Demo, Architecture, Publications, Visit Yann Lecun website ](http://yann.lecun.com/exdb/lenet/)
-      * 2 sets of Conv -> Relu -> Pool layers
-  * GoogLe Net - [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)
-  * GoogLe Net - [Slide Deck, Need of Inception Module](https://pdfs.semanticscholar.org/0b99/d677883883584d9a328f6f2d54738363997a.pdf)
-  * ResNet
+## Deep Learning Architectures, Misc. Resources
+
+* AlexNet
+* VGG16
+* LeNet
+    * Used of MNIST - for Digit and Character Recognition
+    * [For Demo, Architecture, Publications, Visit Yann Lecun website ](http://yann.lecun.com/exdb/lenet/)
+    * 2 sets of Conv -> Relu -> Pool layers
+
+* GoogLe Net 
+  * Inception Module 
+    * CONV layer with multiple filter size.
+    * Multi level feature extractor
+  * Has a network in network, also called micro-architecture.
+  * [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)
+  * [Slide Deck, Need of Inception Module](https://pdfs.semanticscholar.org/0b99/d677883883584d9a328f6f2d54738363997a.pdf)
+
+* ResNet
+  * Variation of another Micro architecture.
+  * Residual Module
+
+* SqueezeNet
+  * Another variation of Micro architecture.
+  * Fire Module
+
+* Tiny ImageNet
   * [Tiny ImageNet Dataset from Stanford CS231N course](https://tiny-imagenet.herokuapp.com/)

@@ -17,3 +17,11 @@
   * Use CNN (both CONV + POOL layers)
 
 ## Opencv
+
+## Quick References
+  * Sci Kit Intro
+  * Keras Intro
+  * Random Number Generation
+  * Numpy functions
+  * Pandas functions
+  
