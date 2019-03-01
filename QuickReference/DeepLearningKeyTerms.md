@@ -55,9 +55,16 @@ The activation function can be linear or non-linear. In reality, most of the dec
 The different activation functions are:
 
  * sigmoid
+
  * Hyper tangent (tanh)
+
  * Rectified Linear Unit (ReLu) 
+
  * and more.
+
+   [Different Activation Functions](https://goo.gl/images/sUp74c)
+
+    
 
 ## Epochs
 
