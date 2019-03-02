@@ -62,7 +62,13 @@ The different activation functions are:
 
  * and more.
 
-   [Different Activation Functions](https://goo.gl/images/sUp74c)
+   [Different Activation Functions](https://goo.gl/images/sUp74c) [PNG Credits: TowardsDataScience]
+
+   
+
+   ![Activation Function](https://github.com/abalaji-blr/Projects/blob/master/QuickReference/ActivationFunction_TowardsDataScience.png?raw=true)
+
+   
 
     
 
