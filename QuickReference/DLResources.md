@@ -2,11 +2,19 @@
 
 [TOC]
 
-## Markdown
+## General Resources
 
 - Typora (Markdown Editor)
 
 - [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+
+- [Bitmap / Pixel Web based Editor](https://pixlr.com/editor/)
+
+- [Maths symbol / Formula Editor](www.hostmath.com) | [Equations Editor](https://www.codecogs.com/latex/eqneditor.php)
+
+- [Flowchart | Sequence diagram in Markdown](https://mermaidjs.github.io/)
+
+- 
 
   
 
