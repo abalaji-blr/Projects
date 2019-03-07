@@ -90,3 +90,32 @@ In general, many numbers (say K ) of filters are applied for a given image, whic
 
 The **Feature Maps** in the initial Convolutional layer learns about the **edges/corner regions** from the image. Where as, the Deeper convolutional layers learn **textures, shapes, part of objects, objects, and scene**.
 
+
+
+## Receptive Field
+
+The receptive field in CNN refers to the size of the input image the neuron is influenced by.
+
+If we take the first convolution layer with filter size 3x3, the convolued output is connected to a neuron. The receptive field in this case is 3x3. It's also called as *local receptive field*.
+
+When we stack multiple layers, the neuron in the hidden layers can see / influenced by the bigger part of the input image when compared to the initial layers. Say, if the hidden layer uses 3x3 convolution, the *local receptive field* is still 3x3. But the *effective receptive field* is the combination of the filter sizes plus the impact of the pooling layer (based on filter size, stride and padding).
+
+<u>Example 1:</u> Let us assume,  we are applying 3x3 Convolution on the input image. What is the local and effective receptive field?
+
+Both are 3x3.
+
+<u>Example 2:</u> Let us assume, we are applying 2 sets of 3x3 convolution on the input image. What is the local and effective receptive field for both the layers.
+
+* For layer1 : 
+  * local and effective receptive field is 3x3.
+
+* For layer2: 
+  * Local receptive field is 3x3 (kernel size). 
+  * Global receptive field is 5x5. Reason is 3x3 followed by another 3x3. Effectively, the neuron which takes the output from the layer2, will see the region of size 5x5 of the input image. 
+
+[For more info: Refer Paper: What are Receptive Field, Effective Receptive Field ](https://arxiv.org/abs/1705.07049)
+
+
+
+---
+
