@@ -42,7 +42,45 @@ For a given image (say size **n x m**), after applying 3x3 convolution, the laye
 
 The importance of 3x3 convolution is that it captures the local spatial features when compared to 1x1 convolution.
 
+## How to compute number of Convolution Parameters?
 
+
+
+The generalized formula to compute the number of parameters for the Convolution layer is :
+
+$$ channelsIn * kernelWidth * kernelHeight * channelsOut + channelsOut (for biases) $$
+
+<u> For Example:</u>
+
+```python
+def my_model():
+    model = Sequential()
+    model.add(Convolution2D(34, 3, 3, activation='relu', input_shape=(28,28,1))) # output 26x26x34
+    model.add(Convolution2D(32, 1, activation='relu'))  # output: 26x26x32 
+    model.add(Convolution2D(32, 3, 3, activation='relu')) # 24x24x32 
+    return model
+```
+
+
+
+```
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_4 (Conv2D)            (None, 26, 26, 34)        340       
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 26, 26, 32)        1120      
+_________________________________________________________________
+conv2d_6 (Conv2D)            (None, 24, 24, 32)        9248      
+=================================================================
+```
+
+Details:
+
+Layer1 : 1 x 3 x 3 x 34 + 34 = 320
+
+Layer2: 34 x 1 x 1 x 32 + 32 = 1120
+
+Layer3: 32 X 3 x 3 x 32 + 32 = 9248
 
 ## Activation Function
 
