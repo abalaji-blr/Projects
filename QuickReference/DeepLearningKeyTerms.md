@@ -28,11 +28,11 @@ In the case of Deep Learning, the filters (small-matrix) are initialised with ra
 
 In the case of 1x1 convolution, the convolution operation is performed with a kernel of size 1x1 for the given image.
 
-The significance of the 1x1 convolution layer is that the **output image size remains same** in terms of width and height (with the default stride or step size being 1). However, the depth can be different.
+The significance of the 1x1 convolution layer is that the **output image size remains same** in terms of width and height (with the default stride or step size being 1). **However, the depth can be different**.
 
-In general, the 1x1 convolution is applied to reduce the spatial dimension or depth. As a result, the number of trainable parameters are also reduced.
+In general, the 1x1 convolution is applied to **reduce the spatial dimension or depth** i.e., the number of channels. As a result, the number of trainable parameters are also reduced.
 
-
+This is also called as **Pointwise Convolution** or **Network in Network** (referred in *Inception Network)*.
 
 ## 3x3 convolution
 
@@ -41,6 +41,18 @@ In the case of 3x3 convolution, the convolution operation is performed with a ke
 For a given image (say size **n x m**), after applying 3x3 convolution, the layer output will be of reduced size ( **n-2 x m-2 **) with the default stride or step being 1. By varying the step size, you can downsample the input image, similar to that of *pooling* operation.
 
 The importance of 3x3 convolution is that it captures the local spatial features when compared to 1x1 convolution.
+
+## How to compute the image size after convolution?
+
+<u>Example:1</u>
+
+1. Let the input image be *n x n x 1*, 28x28x1
+
+2. Apply Convolution, filter size(f): 3x3, number of filters 10. Padding(p) = 0, stride(s) = 1 (default)
+
+   The output image size is : $$ \frac{n+ 2p -f}{s} + 1$$
+
+   So, output image size is: ((28 + 0 -3) / 1) + 1 => 25 + 1 => 26x26
 
 ## How to compute number of Convolution Parameters?
 
@@ -156,4 +168,56 @@ Both are 3x3.
 
 
 ---
+
+## Pooling
+
+The pooling operation is used **to shrink the input image representation**. It also uses filter and stride to achieve down sizing of the input image. The filters in this case, usually picks up - Max value (Max Pooling) or Avgerage of the values (Avg. Pooling) captured by the filter.
+
+Some important points to note are:
+
+* The pooling operation happens per channel.
+
+  * Say, input image is: 
+
+    28x28x3 -> Max pool, filter size 2x2, stride =2 => 14x14 => reduces the input by half.
+
+* There is **no parameter/ weights** associated to the pooling operation.
+
+* Usually, no padding done.
+
+
+
+$$ Input Volume: n_h * n_w *n_c ,  (height * width  * numberOfChannels)  $$
+
+$$Output Volume:  \lfloor\frac{n_h -f}{s} + 1 \rfloor * \lfloor\frac{n_w -f }{s} + 1 \rfloor * n_c$$
+
+
+
+## Why Convolution is preferred over Fully connected layers?
+
+In the case of FC layers, the number of parameters are huge.
+
+In the case of Convolution layers, the number of parameters are *minimal*. They are due to
+
+* Parameter sharing: The same filter (say, vertical line detector) is used to scan over the entire image.
+* Sparse Connections.
+
+## What is Residual Block and Residual Network?
+
+The Deep NN faces something called *Vanishing & Exploding gradient problem*.
+
+So, inorder to train Deeper NN, something called - **Skip Connections / Short Cut** are introduced in the network. 
+
+The activation output  from one layer is fed into few layers deep in the network. They form a **Residual block**. The Residual Network is built by stacking those **Residual Block**s.
+
+The intution behind - why the residual block work is that these blocks learns the **Identify function** due to the *skip connections*. So, they won't hurt the performance rather it will improve from there and help train the deeper neural networks.
+
+*One implementation thing to note is, when we do skip connections, the output dimensions of the output layer and input dimension of the deeper layer - must match*. There are multiple ways to achieve that:
+
+* Just paddings zero to achieve certain size in the weight matrix at receiving side would match the input volume.
+* Use Same size convolution layers (same filter size and num of channels) multiple times.
+
+## What is Inception Module?
+
+## What is Inception Network (aka gooLeNet)?
 
