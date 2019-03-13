@@ -197,10 +197,59 @@ $$Output Volume:  \lfloor\frac{n_h -f}{s} + 1 \rfloor * \lfloor\frac{n_w -f }{s}
 
 In the case of FC layers, the number of parameters are huge.
 
-In the case of Convolution layers, the number of parameters are *minimal*. They are due to
+In the case of Convolution layers, **the number of parameters are *minimal*.** They are due to
 
 * Parameter sharing: The same filter (say, vertical line detector) is used to scan over the entire image.
+
 * Sparse Connections.
+
+  
+
+## More Convoultions
+
+### Grouped Convolution
+
+### Depthwise Separable Convolution
+
+[Graphical Illustration](https://towardsdatascience.com/types-of-convolutions-in-deep-learning-717013397f4d)
+
+In normal convolution, the convolution operation is performed to the complete input depth.
+
+For example: Input size: 28x28x5, Conv2d(3x3), number of kernels:10 (which is also the output channel)
+
+For one 3x3 covolution operation, all the channels(in this case 5) are used and *one* value is computed (i.e.., convolution is nothing but a sum of products).
+
+In the case of Depthwise Separable Convolution, two things happen:
+
+1. 3x3 convolution happens on each input channel separately. In this case, 5.
+2. Apply 1x1 convolution on the feature map obtained thru step 1, in this case 5, and add them together. Need to repeat that process for the given number of kernels ( which is the output channel as well).
+
+Basically, we are decoupling the input and output channel from the number of parameter calculation. Thus, the **Depthwise Separable Convolution** results in *less* number of parameters.
+
+In this case:
+
+1. $$ 5 * 3 *3 = 45 params$$
+2. $$ 5 * 10 * 1 * 1 = 50 params$$
+
+So, *95 params* Vs. 5 x 3 x 3x 10 => 450 params (in the case of Regular Convolution).
+
+
+
+###  Dilated Convolution
+
+
+
+### Transpose Convolution
+
+It is also called as *Fractionally Strided Convolution* / *Deconvolution*.
+
+
+
+---
+
+---
+
+
 
 ## What is Residual Block and Residual Network?
 
