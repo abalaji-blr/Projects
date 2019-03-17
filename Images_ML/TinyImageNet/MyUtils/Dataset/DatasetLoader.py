@@ -59,7 +59,7 @@ class DatasetLoader:
     '''
     For a given class id, load images.
     '''
-    def load_training_images_for_a_class(self, class_id):
+    def load_training_images_for_a_class(self, class_id, resize_flag=False):
         res_data = []
         res_label = []
 
@@ -70,6 +70,10 @@ class DatasetLoader:
 
         for file_name in file_list:
             img = cv2.imread(file_name)
+
+            if (resize_flag == True):
+                img = cv2.resize(img, (32, 32),interpolation=cv2.INTER_AREA)
+
             res_data.append(img)
             res_label.append(class_id)
 
@@ -78,18 +82,19 @@ class DatasetLoader:
     '''
     For a given set of class ids, load images.
     '''
-    def load_training_images_for_a_list_classes(self, class_id_list):
+    def load_training_images_for_a_list_classes(self, class_id_list, resize_flag=False):
         res_data = []
         res_label = []
 
         for class_id in class_id_list:
-            (data, label) = self.load_training_images_for_a_class(class_id)
+            (data, label) = self.load_training_images_for_a_class(class_id, resize_flag)
             res_data.append(data)
             res_label.append(label)
         # vertically stack the data and return it.
         return ( np.array(np.vstack(res_data)), np.array(res_label).flatten())
 
-    ############# validation #############    
+    ############# validation ###########################################
+    
     '''
     get_complete_validation_data_info()
     output: file-name-list class-ids
@@ -115,7 +120,7 @@ class DatasetLoader:
         res_file_list = [os.path.join(
             self.IMAGE_ROOT_DIR, 'val', 'images', file_name) for file_name in result_df['FileName']]
         return(np.array(res_file_list), np.array(result_df['ClassID']))
-        
+
     '''
     get_validation_data_info( given classIDList)
     output: file-name-list class-ids
@@ -130,4 +135,43 @@ class DatasetLoader:
 
         return( np.array(res_file_list).flatten(), np.array(res_label_list).flatten())
 
- 
+    '''
+    load_validation_images_for_a_class
+    output: val-images, val-labels
+    '''
+    ## load validation images
+    def load_validation_images_for_a_class(self, class_id, resize_flag=False):
+        res_data = []
+        res_label = []
+
+        # get validation file names
+        (file_list, label_list) = self.get_validation_data_for_a_class(class_id)
+
+        #print(file_list)
+        # go thru each file and load them.
+        for file_name in file_list:
+            img = cv2.imread(file_name)
+            if (resize_flag == True):
+                img = cv2.resize(img, (32, 32),interpolation=cv2.INTER_AREA)
+
+            res_data.append(img)
+             
+        res_label.append(label_list)
+
+        return( np.array(res_data), np.array(res_label))
+
+      
+    '''
+    load_validation_images_for_a_list_classes
+    output: val-images, val-labels
+    '''
+    def load_validation_images_for_a_list_classes(self, class_id_list, resize_flag=False):
+        res_data = []
+        res_label = []
+
+        for class_id in class_id_list:
+            (data, label) = self.load_validation_images_for_a_class(class_id, resize_flag)
+            res_data.append(data)
+            res_label.append(label)
+        # vertically stack the data and return it.
+        return (np.array(np.vstack(res_data)), np.array(res_label).flatten())
