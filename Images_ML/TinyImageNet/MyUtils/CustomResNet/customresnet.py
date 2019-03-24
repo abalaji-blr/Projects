@@ -4,6 +4,10 @@ from keras.layers.convolutional import Conv2D
 from keras.layers.convolutional import AveragePooling2D
 from keras.layers.convolutional import MaxPooling2D
 from keras.layers.convolutional import ZeroPadding2D
+
+from keras.layers import GlobalAveragePooling2D
+from keras.layers import SeparableConv2D
+
 from keras.layers.core import Activation
 from keras.layers.core import Dense
 from keras.layers import Flatten
@@ -145,12 +149,27 @@ class CustomResNet:
         ## BN -> Act -> Ave. pooling
         x = BatchNormalization()(x)
         x = Activation('relu')(x)
-        x = AveragePooling2D((8,8))(x)
+
+        block_output = x
+        block_shape  = K.int_shape(x)
+
+        #try GlobalAvgPool instead of AvgPool
+        # input tensor 8x8x512
+        x = SeparableConv2D(block_shape[3] // 2, (3, 3))(block_output)
+
+        # reduce the volume to num_classes
+        x = SeparableConv2D(num_classes, (3,3))(x)
+        x = GlobalAveragePooling2D()(x)
+         
+        #x = AveragePooling2D((8,8))(x)
+        
 
         ## outputs
-        x = Flatten()(x)
-        x = Dense(num_classes)(x)
+        #x = Flatten()(x)
+        #x = Dense(num_classes)(x)
+        
         outputs = Activation('softmax')(x)
+        
 
         ## build the model
         model = Model(inputs, outputs, name='custom_resnet')
