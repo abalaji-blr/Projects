@@ -93,7 +93,7 @@ class DatasetLoader:
             res_data.append(img)
             res_label.append(class_id)
 
-        return( np.array(res_data), np.array(res_label), np.array(file_list)
+        return( np.array(res_data), np.array(res_label), np.array(file_list))
 
 
     '''
@@ -146,9 +146,12 @@ class DatasetLoader:
                                 names=['FileName', 'ClassID', 'X', 'Y', 'H', 'W'])
         result_df = val_df[ val_df['ClassID'] == class_id]
 
-        dir_prefix=self.VAL_ROOT_DIR
+        ## coin the filename 
+        dir_prefix=os.path.join(self.VAL_ROOT_DIR, class_id)
+
         if (is_images_sub_dir):
-            dir_prefix=os.path.join(dir_prefix, 'images')
+            dir_prefix=os.path.join(self.VAL_ROOT_DIR, 'images')
+    
 
         res_file_list = [os.path.join(dir_prefix, file_name) for file_name in result_df['FileName']]
         return(np.array(res_file_list), np.array(result_df['ClassID']))
