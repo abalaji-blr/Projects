@@ -42,7 +42,7 @@
 * [Flipboard | Inkers.ai ](https://flipboard.com/@rohanshravan9/eip-%7C-inkers.ai-fhq88qupz)
 * [VGG](http://www.robots.ox.ac.uk/~vgg/research/very_deep/)
 * [VGG Image Annotator](http://www.robots.ox.ac.uk/~vgg/software/via/)
-* 
+* [Andrej Karpathy's : Sanity Preserver ](<http://www.arxiv-sanity.com/>)
 
 ## Online Books
 
