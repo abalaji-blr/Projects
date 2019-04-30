@@ -32,7 +32,7 @@ A Few things to note about RNN which are different from regular NN are:
 1. The output not only depends on input but also the previous activation (state). 
 2. The hidden state of RNN is also called as memory.
 3. RNN shares the same parameter across all steps. Thus, reduces the number of parameters.
-4. Backpropagation through time is used to back propagate the losses.
+4. **Backpropagation through time (BPTT)** is used to back propagate the losses.
 
 ## What are the different architectures of RNN?
 
@@ -42,3 +42,10 @@ A Few things to note about RNN which are different from regular NN are:
 
 
 
+## Blogs
+
+* [RNN in Tensorflow](<https://r2rt.com/recurrent-neural-networks-in-tensorflow-i.html>)
+* [WildML : RNN Tutorial](<http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/>)
+* [SlideShare: RNN](<https://www.slideshare.net/ananth/recurrent-neural-networks-lstm-and-gru>)
+* [Kaggle - RNN Intro](<https://www.kaggle.com/honeysingh/intro-to-recurrent-neural-networks-lstm-gru>)
+* 
