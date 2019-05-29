@@ -42,10 +42,43 @@ A Few things to note about RNN which are different from regular NN are:
 
 
 
+## How the Vanishing  / Exploding Gradient resolved in RNN?
+
+As the RNN has deeper NN structure, the gradients computed based on the loss / error needs to beback propagate to the input. 
+
+When the gradient is small ( < 1), when they are back propagated to the input, the gradient may approach *zero / very negligible value* results in gradient vanishing. 
+
+When the gradient is big ( > 1), when they are back propagaged, the gradient will become a big value, that is the gradient explodes. 
+
+In both the scenarios, it affects the functionaly of NN as weights close to the inputs become either zero / huge number - ie., weight is **not appropriate**.
+
+The vanishing / exploding gradient can be resolved in many ways. One of them is: **LSTM.**
+
+**LSTM** has the following things:
+
+* the direct memory pipeline throughout the network
+
+* *forget gate*(sigmoid function) - to erase the old memory or not
+
+* input gate(sigmoid + tanh function)
+
+* Output gate(sigmoid function)
+
+  
+
+
+
 ## Blogs
 
+* [Chistopher Olah Github blog](<http://colah.github.io/posts/2015-08-Understanding-LSTMs/>)
 * [RNN in Tensorflow](<https://r2rt.com/recurrent-neural-networks-in-tensorflow-i.html>)
 * [WildML : RNN Tutorial](<http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/>)
 * [SlideShare: RNN](<https://www.slideshare.net/ananth/recurrent-neural-networks-lstm-and-gru>)
 * [Kaggle - RNN Intro](<https://www.kaggle.com/honeysingh/intro-to-recurrent-neural-networks-lstm-gru>)
+
+
+
+## Papers
+
+* [Visualizing and Understanding Recurrent Networks | Andrej Karpathy ](<https://arxiv.org/pdf/1506.02078v2.pdf>)
 * 
