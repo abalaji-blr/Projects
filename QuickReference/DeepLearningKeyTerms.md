@@ -165,7 +165,11 @@ Both are 3x3.
 
 [For more info: Refer Paper: What are Receptive Field, Effective Receptive Field ](https://arxiv.org/abs/1705.07049)
 
+* Apart from the *pooling* operation, the *Stride and Padding* has more influence on the effective receptive field. Refer to the following article and computation to identify the effective receptive field.
 
+  [Receptive Field Computation](<https://medium.com/mlreview/a-guide-to-receptive-field-arithmetic-for-convolutional-neural-networks-e0f514068807>)
+
+  
 
 ---
 
