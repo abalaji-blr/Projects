@@ -58,8 +58,10 @@ The Generative modeling can be used in the following ways:
    * There are two different models (networks) which are adversaries to each other.
 
      * Generator
+       * A Fully Connected Neural Network
        * They generate the samples which are intended to be in the *training distribution*.
      * Discriminator
+       * Another Fully connected Neural Network
        * Need to train this model using the training samples.
        * Also, it examines the *generated samples* (from generator) with the training set and classify whether the sample is *fake or real*. 
 
@@ -91,11 +93,40 @@ The Generative modeling can be used in the following ways:
 
    
 
-7. What is KL Divergence?
+7. What is information **entropy**?
 
-8. What is DCGAN ( Deep Convolutional GAN)?
+   In information theory, entropy is measurement unit (aka *bits*) to carry information without any loss from source to destination. It represents the minimum number of bits required for the information.
+
+   It directly depends on the *probability*  of the information and number of decisions to select that information (from tree structure).
+
+   So, entropy is $ H = p * log(1/p)$. It can also be rewritten as $ H = -p * log(p) $.
+
+   See wikipedia / khanacademy for more info.
 
    
+
+8. What is **KL (Kullback-Liebler) Divergence**?
+
+   KL Divergence measures one probability distribution with another (reference probability distribution).
+
+   It is also called as *relative entropy*. When **KL Divergence is zero, both the distribution are identical.**
+
+   
+
+9. 
+
+10. What is DCGAN ( Deep Convolutional GAN)?
+
+    
+
+### Blogs
+
+* [OpenAI | Generative Models](<https://openai.com/blog/generative-models/>)
+* [AI Odyssey](<https://ai-odyssey.com/2017/02/24/latent-space-visualization%e2%80%8a/>)
+* [Skymind ](<https://skymind.ai/wiki/variational-autoencoder>)
+* 
+
+
 
 
 
