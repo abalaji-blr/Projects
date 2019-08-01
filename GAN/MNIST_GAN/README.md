@@ -4,7 +4,7 @@
 
 * Epoch 1000
 
-  ![1000](/Users/abalaji/Documents/GitProjects/Projects/GAN/MNIST_GAN/gen_images/1000.png)
+  ![1000](./gen_images/1000.png)
 
 * Epoch 5000
 
