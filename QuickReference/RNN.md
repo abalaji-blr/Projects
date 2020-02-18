@@ -44,7 +44,7 @@ A Few things to note about RNN which are different from regular NN are:
 
 ## How the Vanishing  / Exploding Gradient resolved in RNN?
 
-As the RNN has deeper NN structure, the gradients computed based on the loss / error needs to beback propagate to the input. 
+As the RNN has deeper NN structure, the gradients computed based on the loss / error needs to be back propagated to the input. 
 
 When the gradient is small ( < 1), when they are back propagated to the input, the gradient may approach *zero / very negligible value* results in gradient vanishing. 
 
@@ -66,7 +66,35 @@ The vanishing / exploding gradient can be resolved in many ways. One of them is:
 
   
 
+## RNNs using Keras
 
+Keras provides the following for RNN:
+
+ * SimpleRNN()
+ * RNN
+
+
+
+**SimpleRNN**
+
+* The output is **feed back to input**
+* The number of units represents the **dimensionality of output space**
+* By default, activation is 'tanh'.
+* By default use_bias= True
+
+### How to calculate the parameters for SimpleRNN?
+
+- SimpleRNN
+  - 𝑇𝑜𝑡𝑎𝑙\_𝑝𝑎𝑟𝑎𝑚𝑒𝑡𝑒𝑟𝑠=𝑟𝑒𝑐𝑢𝑟𝑟𝑒𝑛𝑐𝑦\_𝑤𝑒𝑖𝑔ℎ𝑡𝑠+𝑛𝑢𝑚\_𝑖𝑛𝑝𝑢𝑡\_𝑓𝑒𝑎𝑡𝑢𝑟𝑒𝑠∗𝑛𝑢𝑚\_𝑢𝑛𝑖𝑡𝑠+𝑛𝑢𝑚_𝑏𝑖𝑎𝑠
+- Recurrency_weights
+  - The output is feed to all units.
+  - Thus, the recurrency_weights = num_units * num_units
+
+$Total\_Parameters = num\_units * num\_units + num\_input\_features * num\_units + num\_bias$
+
+* [For more info on Parameters, refer to this link in stack overflow](<https://stackoverflow.com/questions/50134334/number-of-parameters-for-keras-simplernn>)
+
+  
 
 ## Blogs
 
