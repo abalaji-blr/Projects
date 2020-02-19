@@ -15,6 +15,7 @@
 
   * Random Rotation
   * LRScheduler - stepLR
+  * Added Dropout in **most **of the layers.
   * Num Params: 14, 868
   * Accuracy: **99.20** at Epoch: 7
 
