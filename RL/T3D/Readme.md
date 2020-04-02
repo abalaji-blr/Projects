@@ -53,6 +53,12 @@
 
 ## T3D Implementation Flow
 
+* [T3D Implementation Source Code](./T3D.ipynb)
+
+---
+
+
+
 ### Step1: Initialise Replay Buffer
 
 ![T3D-step1](./images/T3D-step1.png)
