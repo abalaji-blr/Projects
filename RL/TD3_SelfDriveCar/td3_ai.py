@@ -31,6 +31,9 @@ class ReplayBuffer(object):
     else:
       self.storage.append(transition)
 
+    if len(self.storage) % 10 == 0:
+      print('Replay buffer size: ', len(self.storage))
+
   def sample(self, batch_size):
     ind = np.random.randint(0, len(self.storage), size=batch_size)
     batch_states, batch_next_states, batch_actions, batch_rewards, batch_dones = [], [], [], [], []
@@ -46,20 +49,38 @@ class ReplayBuffer(object):
 
 
 #------------------------ Actor Model  -------------------------------
-
+# input: state
+# output: action
 class Actor(nn.Module):
   
+  # def __init__(self, state_dim, action_dim, max_action):
+  #   super(Actor, self).__init__()
+  #   self.layer_1 = nn.Linear(state_dim, 400)
+  #   self.layer_2 = nn.Linear(400, 300)
+  #   self.layer_3 = nn.Linear(300, action_dim)
+  #   self.max_action = max_action
+
+  # def forward(self, x):
+  #   x = F.relu(self.layer_1(x))
+  #   x = F.relu(self.layer_2(x))
+  #   x = self.max_action * torch.tanh(self.layer_3(x))
+  #   return x
+
   def __init__(self, state_dim, action_dim, max_action):
     super(Actor, self).__init__()
-    self.layer_1 = nn.Linear(state_dim, 400)
-    self.layer_2 = nn.Linear(400, 300)
-    self.layer_3 = nn.Linear(300, action_dim)
+
+    self.conv1 = nn.Conv2d(1, 32, 4, stride=4) # 1x40x40 => 10x10
+    self.conv2 = nn.Conv2d(32, 64, 2, stride=2) # 10x10 => 5x5
+    self.conv3 = nn.Conv2d(64, action_dim, 5, stride=1) # 5x5 => 3
+    self.gap = nn.AdaptiveAvgPool2d((1,1)) # global ave pooling
+
     self.max_action = max_action
 
   def forward(self, x):
-    x = F.relu(self.layer_1(x))
-    x = F.relu(self.layer_2(x))
-    x = self.max_action * torch.tanh(self.layer_3(x))
+    x = F.relu(self.conv1(x))
+    x = F.relu(self.conv2(x))
+    x = F.relu(self.conv3(x))
+    x = self.max_action * F.softmax(self.gap(x))
     return x
 
 #------------------------ Twin Crtics -------------------------------

@@ -1,6 +1,7 @@
 # Self Driving Car
 
 # Importing the libraries
+from torchsummary import summary
 import numpy as np
 from random import random, randint
 import matplotlib.pyplot as plt
@@ -24,7 +25,7 @@ from kivy.graphics.texture import Texture
 
 # Importing the Dqn object from our AI in ai.py
 #from ai import Dqn
-from td3_ai import ReplayBuffer, TD3
+from td3_ai import ReplayBuffer, TD3, Actor
 from gym import spaces
 
 # Adding this line if we don't want the right click to put a red point
@@ -59,6 +60,15 @@ first_update = True
 IMAGE_PATCH_WIDTH = 40
 IMAGE_PATCH_HEIGHT = 40
 
+START_LOC_X = 600
+START_LOC_Y = 350
+
+TARGET_LOC_X = 920
+TARGET_LOC_Y = 270
+
+PLAYFIELD_X = 1429
+PLAYFIELD_Y = 660
+
 longueur = 0
 largeur = 0
 goal_x = 0
@@ -82,22 +92,73 @@ def init_map():
     img = PILImage.open("./images/mask.png").convert('L')
     mask_img = np.asarray(img)
     sand = np.asarray(img)/255
-    goal_x = 1420  # target x
-    goal_y = 622   # target y
+    goal_x = TARGET_LOC_X # target x
+    goal_y = TARGET_LOC_Y  # target y
     first_update = False
     swap = 0
 
+#----------------------------------------------------------------
+# evaluate_policy
+#----------------------------------------------------------------
+def evaluate_policy(policy, eval_episodes=10):
+  avg_reward = 0.
+  game = Game()
+
+  for _ in range(eval_episodes):
+    obs = game.reset()
+    done = False
+    while not done:
+      action = policy.select_action(np.array(obs))
+      obs, reward, done, _ = env.step(action)
+      avg_reward += reward
+
+  avg_reward /= eval_episodes
+
+  print("---------------------------------------")
+  print("Average Reward over the Evaluation Step: %f" % (avg_reward))
+  print("---------------------------------------")
+  return avg_reward
 
 # Initializing the last distance
 last_distance = 0
 #--------------------------- Training Related ---------------------------
-total_timesteps = 0
-timesteps_since_eval = 0
-episode_num = 0
-done = True
-t0 = time.time()
 
+#### ------ Parameters -------------
+start_timesteps = 50
+max_episode_steps = 100
+timesteps_since_eval = 0
+# How often the evaluation step is performed (after how many timesteps)
+eval_freq = 5e3
+max_timesteps = 5e5  # Total number of iterations/timesteps
+
+save_models = True  # Boolean checker whether or not to save the pre-trained model
+expl_noise = 0.1  # Exploration noise - STD value of exploration Gaussian noise
+batch_size = 100  # Size of the batch
+# Discount factor gamma, used in the calculation of the total discounted reward
+discount = 0.99
+tau = 0.005  # Target network update rate
+# STD of Gaussian noise added to the actions for the exploration purposes
+policy_noise = 0.2
+# Maximum value of the Gaussian noise added to the actions (policy)
+noise_clip = 0.5
+# Number of iterations to wait before the policy network (Actor model) is updated
+policy_freq = 2
+
+
+# cyclic replay buffer
 replay_buffer = ReplayBuffer(100)
+state_dim = (IMAGE_PATCH_WIDTH, IMAGE_PATCH_HEIGHT)
+action_dim = 3
+max_action = 1.0
+
+actor = Actor(state_dim, action_dim, max_action)
+summary(actor, input_size=(1,40,40))
+
+# build network - TD DDPG
+#policy = TD3(state_dim, action_dim, max_action)
+
+# evaluation of the model
+#evaluations = [evaluate_policy(policy)]
 
 #--------------------------- Game -------------------------------------
 class Game(Widget):
@@ -116,18 +177,22 @@ class Game(Widget):
     #         low=0, high=255, shape=(IMAGE_PATCH_HEIGHT, IMAGE_PATCH_WIDTH), dtype=np.uint8)
     #     #self.car.center = self.center
 
-    def reset(self):
-        global longueur
-        global largeur
+    def serve_car(self):
+        self.car.center = self.center
+        self.car.velocity = Vector(6, 0)
 
-        #self.car.center = self.center
-        #self.car.center  = (600,310)
         self.car.x = 600
         self.car.y = 350
-        longueur = self.width
-        largeur = self.height
-        obs = self.get_sand_image_patch(IMAGE_PATCH_WIDTH, IMAGE_PATCH_HEIGHT)
-        return(obs)
+        #print('car location:', self.car.center)
+         
+        self.reward = 0.0
+        self.prev_reward = 0.0
+        ## actions - steer, gas, brake
+        ## steer: range -1 to 1 => -1 left, 0 straight, > 0 right
+        self.action_space = spaces.Box(
+            np.array([-1, 0, 0]), np.array([+1, +1, +1]), dtype=np.float32)
+        self.observation_space = spaces.Box(
+            low=0, high=255, shape=(IMAGE_PATCH_HEIGHT, IMAGE_PATCH_WIDTH), dtype=np.uint8)
 
     # get the image patch of certain size
     def get_sand_image_patch(self, width, height):
@@ -144,8 +209,33 @@ class Game(Widget):
         y = int(self.car.y) - (height // 2)
         img_patch = mask_img[x:x+width, y:y+height]
         return img_patch
+    
+    ##---------- reset ----------------
+    def reset(self):
+        global longueur
+        global largeur
 
-    #def step(self, dt): # dt - kivy - delta-time coming from clock
+        #self.car.center = self.center
+        #self.car.center  = (600,310)
+        # set car to starting location.
+        self.car.x = 600
+        self.car.y = 350
+        longueur = self.width
+        largeur = self.height
+        
+        self.reward = 0.0
+        self.prev_reward = 0.0
+
+        # use step() and obtain the state / observation
+        obs = self.step(None)[0]
+        #obs = self.get_sand_image_patch(IMAGE_PATCH_WIDTH, IMAGE_PATCH_HEIGHT)
+        return(obs)
+
+
+
+    #------------------- step ----------------
+    # input: action
+    # outputs: new_obs, reward, done-flag, debug-info
     def step(self, action):
         global goal_x
         global goal_y
@@ -154,24 +244,46 @@ class Game(Widget):
         xx = goal_x - self.car.x
         yy = goal_y - self.car.y
         orientation = Vector(*self.car.velocity).angle((xx, yy))/180.
-        sand_patch = self.get_sand_image_patch(
-            IMAGE_PATCH_WIDTH, IMAGE_PATCH_HEIGHT)
-        print('image_patch: ', sand_patch.shape)
 
-        img_patch = self.get_image_patch(IMAGE_PATCH_WIDTH, IMAGE_PATCH_HEIGHT)
-        patch = PILImage.fromarray(img_patch)
-        #patch.save('./patch.png')
-        new_obs = sand_patch
+        if action is not None:
+            self.car.move()
+
+        new_obs = self.get_sand_image_patch(IMAGE_PATCH_WIDTH, IMAGE_PATCH_HEIGHT)
+         
         #reward
+        step_reward = 0
+        done = False
+
+        if action is not None: # step without action, called from reset()
+            # calculate reward
+            self.reward -= 0.1
+            step_reward = self.reward - self.prev_reward
+            self.prev_reward = self.reward
+            # 
+            # update done flag
+            # set done to True when it hits the wall/ hits the boundary.
+            x, y = self.car.x, self.car.y
+            if abs(x) > PLAYFIELD_X and abs(y) > PLAYFIELD_Y:
+                done = True
+                step_reward = -100
+
+        return new_obs, step_reward, done, {}
 
     def train(self, dt):
         global done
-        global total_timesteps
+        global total_timesteps, start_timesteps
+        global replay_buffer
+        total_timesteps = 0
+        timesteps_since_eval = 0
+        episode_num = 0
+        done = True
+        t0 = time.time()
 
-        print('replay_buffer size:', replay_buffer.max_size)
-        for i in range(5):
-            self.step(1)
-        max_timesteps = 5
+        print('Training...')
+        #print('replay_buffer size:', replay_buffer.max_size)
+        # for i in range(5):
+        #     self.step(1)
+        max_timesteps = 10
 
         # We start the main loop over max timesteps
         while total_timesteps < max_timesteps:
@@ -180,30 +292,41 @@ class Game(Widget):
             if done:
                 obs = self.reset()
 
-            # set done to False
-            done = False
+                # set done to False
+                done = False
+
+                # Set rewards and episode timesteps to zero
+                episode_reward = 0
+                episode_timesteps = 0
+                episode_num += 1
+
+            # find action
+            # for intial timesteps, sample the actions.
+            if total_timesteps < start_timesteps:
+                action = self.action_space.sample()
+
+            
 
             # get the next state and reward
-            #new_obs, reward, done, info = self.step(1)
+            new_obs, reward, done, info = self.step(action)
+
+            # We check if the episode is done
+            done_bool = 0 if episode_timesteps + 1 == max_episode_steps else float(done)
+
+            # We increase the total reward
+            episode_reward += reward
+  
+            # We store the new transition into the Experience Replay memory (ReplayBuffer)
+            replay_buffer.add((obs, new_obs, action, reward, done_bool))
+
+            # We update the state, the episode timestep, the total timesteps, and the timesteps since the evaluation of the policy
+            obs = new_obs
+            episode_timesteps += 1
             total_timesteps += 1
+            timesteps_since_eval += 1
+             
 
-
-                
-
-    def serve_car(self):
-        self.car.center = self.center
-        self.car.x = 600
-        self.car.y = 350
-        print('car location:', self.car.center)
-        self.car.velocity = Vector(6, 0)
-        self.reward = 0.0
-        self.prev_reward = 0.0
-        ## actions - steer, gas, brake
-        ## steer: range -1 to 1 => -1 left, 0 straight, > 0 right
-        self.action_space = spaces.Box(
-            np.array([-1, 0, 0]), np.array([+1, +1, +1]), dtype=np.float32)
-        self.observation_space = spaces.Box(
-            low=0, high=255, shape=(IMAGE_PATCH_HEIGHT, IMAGE_PATCH_WIDTH), dtype=np.uint8)
+  
 
     def update(self, dt):
 
@@ -299,22 +422,11 @@ class Car(Widget):
     signal2 = NumericProperty(0)
     signal3 = NumericProperty(0)
 
-    def move(self, rotation):
+    def move(self):
+        #print('pos:', self.pos)
         self.pos = Vector(*self.velocity) + self.pos
-        self.rotation = rotation
-        self.angle = self.angle + self.rotation
-
-        self.signal1 = int(np.sum(sand[int(self.sensor1_x)-10:int(self.sensor1_x)+10, int(self.sensor1_y)-10:int(self.sensor1_y)+10]))/400.
-        self.signal2 = int(np.sum(sand[int(self.sensor2_x)-10:int(self.sensor2_x)+10, int(self.sensor2_y)-10:int(self.sensor2_y)+10]))/400.
-        self.signal3 = int(np.sum(sand[int(self.sensor3_x)-10:int(self.sensor3_x)+10, int(self.sensor3_y)-10:int(self.sensor3_y)+10]))/400.
-        
-        if self.sensor1_x>longueur-10 or self.sensor1_x<10 or self.sensor1_y>largeur-10 or self.sensor1_y<10:
-            self.signal1 = 10.
-        if self.sensor2_x>longueur-10 or self.sensor2_x<10 or self.sensor2_y>largeur-10 or self.sensor2_y<10:
-            self.signal2 = 10.
-        if self.sensor3_x>longueur-10 or self.sensor3_x<10 or self.sensor3_y>largeur-10 or self.sensor3_y<10:
-            self.signal3 = 10.
-        
+        #self.rotation = rotation
+        #self.angle = self.angle + self.rotation
 
  
 
