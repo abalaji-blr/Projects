@@ -1,7 +1,6 @@
 # Self Driving Car
 
 # Importing the libraries
-from torchsummary import summary
 import numpy as np
 from random import random, randint
 import matplotlib.pyplot as plt
@@ -26,6 +25,7 @@ from kivy.graphics.texture import Texture
 # Importing the Dqn object from our AI in ai.py
 #from ai import Dqn
 from td3_ai import ReplayBuffer, TD3, Actor
+from torchsummary import summary
 from gym import spaces
 
 # Adding this line if we don't want the right click to put a red point
@@ -325,88 +325,6 @@ class Game(Widget):
             total_timesteps += 1
             timesteps_since_eval += 1
              
-
-  
-
-    def update(self, dt):
-
-        global brain
-        global last_reward
-        global scores
-        global last_distance
-        global goal_x
-        global goal_y
-        global longueur
-        global largeur
-        global swap
-
-        longueur = self.width
-        largeur = self.height
-
-        if first_update:
-            init_map()
-
-        print('car location: ', self.car.x, self.car.y)
-        xx = goal_x - self.car.x
-        yy = goal_y - self.car.y
-        orientation = Vector(*self.car.velocity).angle((xx, yy))/180.
-        last_signal = [self.car.signal1, self.car.signal2,
-                       self.car.signal3, orientation, -orientation]
-        #action = brain.update(last_reward, last_signal)
-
-        #scores.append(brain.score())
-
-        # rotation = action2rotation[action]
-        # self.car.move(rotation)
-
-        distance = np.sqrt((self.car.x - goal_x)**2 + (self.car.y - goal_y)**2)
-        # self.ball1.pos = self.car.sensor1
-        # self.ball2.pos = self.car.sensor2
-        # self.ball3.pos = self.car.sensor3
-
-        if sand[int(self.car.x), int(self.car.y)] > 0:
-            self.car.velocity = Vector(0.5, 0).rotate(self.car.angle)
-            print(1, goal_x, goal_y, distance, int(self.car.x), int(
-                self.car.y), im.read_pixel(int(self.car.x), int(self.car.y)))
-
-            last_reward = -1
-        else:  # otherwise
-            self.car.velocity = Vector(2, 0).rotate(self.car.angle)
-            last_reward = -0.2
-            print(0, goal_x, goal_y, distance, int(self.car.x), int(
-                self.car.y), im.read_pixel(int(self.car.x), int(self.car.y)))
-            if distance < last_distance:
-                last_reward = 0.1
-            # else:
-            #     last_reward = last_reward +(-0.2)
-
-        if self.car.x < 5:
-            self.car.x = 5
-            last_reward = -1
-        if self.car.x > self.width - 5:
-            self.car.x = self.width - 5
-            last_reward = -1
-        if self.car.y < 5:
-            self.car.y = 5
-            last_reward = -1
-        if self.car.y > self.height - 5:
-            self.car.y = self.height - 5
-            last_reward = -1
-
-        if distance < 25:
-            if swap == 1:
-                goal_x = 1420
-                goal_y = 622
-                swap = 0
-            else:
-                goal_x = 9
-                goal_y = 85
-                swap = 1
-        last_distance = distance
-
-
-
-
 
 
 #----------------------------------------------------------------
