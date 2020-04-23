@@ -155,7 +155,7 @@ class TD3(object):
   def select_action(self, state):
     state = torch.Tensor(np.expand_dims(state, axis=0)).to(device)
     #state = torch.Tensor(state).to(device)
-    print('state- TD3: ', state.shape)
+    #print('state- TD3: ', state.shape)
     return self.actor(state).cpu().data.numpy().flatten()
 
   def train(self, replay_buffer, iterations, batch_size=100, discount=0.99, \

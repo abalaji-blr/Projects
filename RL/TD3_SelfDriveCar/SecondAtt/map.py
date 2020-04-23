@@ -46,10 +46,11 @@ length = 0
 
 
 brain = 0
-action2rotation = [0,5,-5]
+#action2rotation = [0,5,-5]
 last_reward = 0
 scores = []
 im = CoreImage("./images/MASK1.png")
+
 
 # textureMask = CoreImage(source="./kivytest/simplemask1.png")
 
@@ -77,26 +78,26 @@ goal_y = 0
 
 
 
-#----------------------------------------------------------------
-def init_map():
-    global sand
-    global goal_x
-    global goal_y
-    global first_update
-    global swap
-    global mask_img
-    global longueur
-    global largeur
+# #----------------------------------------------------------------
+# def init_map():
+#     global sand
+#     global goal_x
+#     global goal_y
+#     global first_update
+#     global swap
+#     global mask_img
+#     global longueur
+#     global largeur
 
-    print('initializing sand...')
-    sand = np.zeros((longueur,largeur))
-    img = PILImage.open("./images/mask.png").convert('L')
-    mask_img = np.asarray(img)
-    sand = np.asarray(img)/255
-    goal_x = TARGET_LOC_X # target x
-    goal_y = TARGET_LOC_Y  # target y
-    first_update = False
-    swap = 0
+#     print('initializing sand...')
+#     sand = np.zeros((longueur,largeur))
+#     img = PILImage.open("./images/mask.png").convert('L')
+#     mask_img = np.asarray(img)
+#     sand = np.asarray(img)/255
+#     goal_x = TARGET_LOC_X # target x
+#     goal_y = TARGET_LOC_Y  # target y
+#     first_update = False
+#     swap = 0
 
 
 # Initializing the last distance
@@ -104,8 +105,8 @@ last_distance = 0
 #--------------------------- Training Related ---------------------------
 
 #### ------ Parameters -------------
-start_timesteps = 50
-max_episode_steps = 100
+start_timesteps = 50  # Number of iterations/timesteps before which the model randomly chooses an action, and after which it starts to use the policy network
+max_episode_steps = 10 # 1000
 timesteps_since_eval = 0
 # How often the evaluation step is performed (after how many timesteps)
 eval_freq = 5e3
@@ -126,7 +127,8 @@ policy_freq = 2
 
 
 # cyclic replay buffer
-replay_buffer = ReplayBuffer(100)
+replay_buffer = ReplayBuffer(10000)
+#replay_buffer = ReplayBuffer() # default 1 million
 state_dim = (IMAGE_PATCH_WIDTH, IMAGE_PATCH_HEIGHT)
 action_dim = 3
 max_action = 1.0
@@ -159,7 +161,10 @@ def evaluate_policy(policy, eval_episodes=10):
     done = False
     while not done:
       action = policy.select_action(np.array(obs))
+      #print('action from TD3:', np.argmax(action))
+      action = np.argmax(action)
       obs, reward, done, _ = env.step(action)
+      #print('action: ', action, ' reward: ', reward, ' done: ', done)
       avg_reward += reward
 
   avg_reward /= eval_episodes
@@ -174,6 +179,11 @@ def evaluate_policy(policy, eval_episodes=10):
 evaluations = []
 #evaluations = [evaluate_policy(policy)]
  
+def verify_train():
+    print('Verify Traning Process...')
+    for i in range(50):
+        action = np.random.randint(0, 3)
+        env.step(action)
 
 def new_train(dt):
     print('New training....')
@@ -186,8 +196,8 @@ def new_train(dt):
     done = True
     t0 = time.time()
 
-    max_timesteps = 10
-
+    #max_timesteps = 10000
+    #print('max_timesteps: ', max_timesteps)
     # We start the main loop over max timesteps
     while total_timesteps < max_timesteps:
         # If the episode is done
@@ -205,7 +215,15 @@ def new_train(dt):
         # # find action
         # # for intial timesteps, sample the actions.
         if total_timesteps < start_timesteps:
-            action = env.action_space.sample()
+            action = env.sample_action()
+        else:  # After 10000 timesteps, we switch to the model
+            action = policy.select_action(np.array(obs))
+            action = np.argmax(action) # convert the binary to decimal
+            # If the explore_noise parameter is not 0, we add noise to the action and we clip it
+            # if expl_noise != 0:
+            #     action = (action + \
+            #         np.random.normal(0, expl_noise, \
+            #             size=env.action_space.shape[0])).clip(env.action_space.low, env.action_space.high)
 
         # # get the next state and reward
         new_obs, reward, done, info = env.step(action)
@@ -283,10 +301,11 @@ class CarApp(App):
         #parent = game
         parent = Game()
         env = parent
+        parent.init_game()
         parent.serve_car()
 
         print('Init the map')
-        init_map()
+        #init_map()
 
         print('Painting the canvas')
         self.painter = MyPaintWidget()
@@ -317,8 +336,9 @@ class CarApp(App):
     def train(self, obj):
         global evaluations
         #Clock.schedule_once(evaluate_policy)
-        evaluations = [evaluate_policy(policy)]
+        evaluations = [evaluate_policy(policy, eval_episodes=1)]
         Clock.schedule_once(new_train)
+        #verify_train()
 
     def clear_canvas(self, obj):
         global sand
