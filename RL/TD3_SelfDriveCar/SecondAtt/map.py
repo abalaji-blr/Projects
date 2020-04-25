@@ -78,39 +78,18 @@ goal_y = 0
 
 
 
-# #----------------------------------------------------------------
-# def init_map():
-#     global sand
-#     global goal_x
-#     global goal_y
-#     global first_update
-#     global swap
-#     global mask_img
-#     global longueur
-#     global largeur
-
-#     print('initializing sand...')
-#     sand = np.zeros((longueur,largeur))
-#     img = PILImage.open("./images/mask.png").convert('L')
-#     mask_img = np.asarray(img)
-#     sand = np.asarray(img)/255
-#     goal_x = TARGET_LOC_X # target x
-#     goal_y = TARGET_LOC_Y  # target y
-#     first_update = False
-#     swap = 0
-
-
 # Initializing the last distance
 last_distance = 0
 #--------------------------- Training Related ---------------------------
 
 #### ------ Parameters -------------
-start_timesteps = 50  # Number of iterations/timesteps before which the model randomly chooses an action, and after which it starts to use the policy network
+start_timesteps = 1000  # Number of iterations/timesteps before which the model randomly chooses an action, and after which it starts to use the policy network
 max_episode_steps = 10 # 1000
 timesteps_since_eval = 0
 # How often the evaluation step is performed (after how many timesteps)
 eval_freq = 5e3
-max_timesteps = 5e5  # Total number of iterations/timesteps
+#max_timesteps = 5e5  # Total number of iterations/timesteps
+max_timesteps = 5000  # Total number of iterations/timesteps
 
 save_models = True  # Boolean checker whether or not to save the pre-trained model
 expl_noise = 0.1  # Exploration noise - STD value of exploration Gaussian noise
@@ -193,6 +172,9 @@ def new_train(dt):
     total_timesteps = 0
     timesteps_since_eval = 0
     episode_num = 0
+    episode_reward = 0
+    episode_timesteps = 0
+    file_name = 'car_td3'
     done = True
     t0 = time.time()
 
@@ -202,6 +184,22 @@ def new_train(dt):
     while total_timesteps < max_timesteps:
         # If the episode is done
         if done:
+
+            # If we are not at the very beginning, we start the training process of the model
+            if total_timesteps != 0:
+                print("Total Timesteps: {} Episode Num: {} Reward: {}".format(
+                    total_timesteps, episode_num, episode_reward))
+                policy.train(replay_buffer, episode_timesteps, batch_size,
+                            discount, tau, policy_noise, noise_clip, policy_freq)
+
+            # We evaluate the episode and we save the policy
+            if timesteps_since_eval >= eval_freq:
+                timesteps_since_eval %= eval_freq
+                evaluations.append(evaluate_policy(policy))
+                policy.save(file_name, directory="./pytorch_models")
+                np.save("./results/%s" % (file_name), evaluations)
+
+            # When the training step is done, we reset the state of the environment
             obs = env.reset()
 
             # set done to False

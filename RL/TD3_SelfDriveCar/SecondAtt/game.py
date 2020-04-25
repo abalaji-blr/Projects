@@ -43,26 +43,6 @@ print('original mask:', im.size)
 #----------------------------------------------------------------
 
 
-# def init_map():
-#     global sand
-#     global goal_x
-#     global goal_y
-#     global first_update
-#     global swap
-#     global mask_img
-#     global longueur
-#     global largeur
-
-#     print('initializing sand...')
-#     sand = np.zeros((longueur, largeur))
-#     img = PILImage.open("./images/mask.png").convert('L')
-#     mask_img = np.asarray(img)
-#     sand = np.asarray(img)/255
-#     goal_x = TARGET_LOC_X  # target x
-#     goal_y = TARGET_LOC_Y  # target y
-#     first_update = False
-#     swap = 0
-
 #----------------------------------------------------------------
 # Creating the car class
 
@@ -160,6 +140,15 @@ class Game(Widget):
     def sample_action(self):
         return np.random.randint(0, self.action_space)
 
+    def isCarOffLimits(self):
+        res = False
+        x, y = int(self.car.x), int(self.car.y)
+        if x >= PLAYFIELD_X or x < 0:
+            res = True
+        elif y >= PLAYFIELD_Y or y < 0:
+            res = True
+        return res
+
     #------------------- step ----------------
     # input: action
     # outputs: new_obs, reward, done-flag, debug-info
@@ -168,18 +157,22 @@ class Game(Widget):
         global goal_y
         global im
 
-        print('action:', action, ' car-location:(', int(self.car.x),',', int(self.car.y), ')', )
+        #print('action:', action, ' car-location:(', int(self.car.x),',', int(self.car.y), ')', )
         xx = goal_x - self.car.x
         yy = goal_y - self.car.y
         orientation = Vector(*self.car.velocity).angle((xx, yy))/180.
 
         if action is not None:
             x, y = int(self.car.x), int(self.car.y)
-            if self.sand[x, y] > 0:
-                self.car.velocity = Vector(0.5, 0).rotate(self.car.angle)
-            else:
-                self.car.velocity = Vector(2, 0).rotate(self.car.angle)
-            self.car.move(action)
+            #isCarOffLimits = self.isCarOffLimits
+            if self.isCarOffLimits() == False:
+                if self.sand[x, y] > 0:
+                    # off the road
+                    self.car.velocity = Vector(5, 0).rotate(self.car.angle)
+                else:
+                    # on road
+                    self.car.velocity = Vector(10, 0).rotate(self.car.angle)
+                self.car.move(action)
 
         new_obs = self.get_sand_image_patch(
             IMAGE_PATCH_WIDTH, IMAGE_PATCH_HEIGHT)
@@ -189,37 +182,30 @@ class Game(Widget):
         reward = 0
         done = False
 
+        # Handle the rewards...
         if action is not None:  # step without action, called from reset()
-            # calculate reward
-            #self.reward -= 0.1
-            # step_reward = self.reward - self.prev_reward
-            # self.prev_reward = self.reward
-            #
             # update done flag
             # set done to True when it hits the wall/ hits the boundary.
             x, y = int(self.car.x), int(self.car.y)
-            mask_pixel_value = im.read_pixel(x,y)
-            print('image pixel', mask_pixel_value)
+            # mask_pixel_value = im.read_pixel(x,y)
+            # print('image pixel', mask_pixel_value)
 
-            print('sand:', self.sand[x,y])
-            if self.sand[x,y] > 0:
-                 reward = 1
+            # car is out of bounds, penalize
+            if self.isCarOffLimits() == True:
+                done = True
+                reward = -100
+            elif x == goal_x and y == goal_y:
+                # target
+                done = True
+                print('*********REWARD: 1 ************')
+                reward = 1
             else:
-                reward = -1
-
-            # handle the collision cases - off the road
-            # pixel black - road - [0,0,0]
-            # pixel white - off-the-road - [1, 1,1]
-            if mask_pixel_value[0] == 1 \
-                and mask_pixel_value[1] == 1 \
-                and mask_pixel_value[2] == 1:
-                done = True
-                reward = -100
-            elif abs(x) > PLAYFIELD_X or abs(y) > PLAYFIELD_Y:
-                # hitting the boundary walls
-                done = True
-                reward = -100
-
+                # off-road (hitting the building)
+                if self.sand[x,y] > 0:
+                    reward = -1
+            
+        #print('action: ', action, 'car: (', self.car.x, ', ', self.car.y)
+        #print(f'action: {action} car:({int(self.car.x)},{int(self.car.y)}) reward: {reward} done:{done}')
         return new_obs, reward, done, {}
     # get the image patch of certain size
 
@@ -244,59 +230,3 @@ class Game(Widget):
         y = int(self.car.y) - (height // 2)
         img_patch = mask_img[x:x+width, y:y+height]
         return img_patch
-
-    #-------------------------- Training --------------------------
-
-    # def train(self, dt):
-    #     global done
-    #     global total_timesteps, start_timesteps
-    #     global replay_buffer
-    #     total_timesteps = 0
-    #     timesteps_since_eval = 0
-    #     episode_num = 0
-    #     done = True
-    #     t0 = time.time()
-
-    #     print('Training...')
-    #     max_timesteps = 10
-
-    #     # We start the main loop over max timesteps
-    #     while total_timesteps < max_timesteps:
-
-    #         # If the episode is done
-    #         if done:
-    #             obs = self.reset()
-
-    #             # set done to False
-    #             done = False
-
-    #             # Set rewards and episode timesteps to zero
-    #             episode_reward = 0
-    #             episode_timesteps = 0
-    #             episode_num += 1
-
-    #         # # find action
-    #         # # for intial timesteps, sample the actions.
-    #         # if total_timesteps < start_timesteps:
-    #         #     action = self.action_space.sample()
-
-    #         # # get the next state and reward
-    #         new_obs, reward, done, info = self.step(0)
-
-    #         # # We check if the episode is done
-    #         # done_bool = 0 if episode_timesteps + \
-    #         #     1 == max_episode_steps else float(done)
-
-    #         # # We increase the total reward
-    #         # episode_reward += reward
-
-    #         # # We store the new transition into the Experience Replay memory (ReplayBuffer)
-    #         # replay_buffer.add((obs, new_obs, action, reward, done_bool))
-
-    #         # We update the state, the episode timestep, the total timesteps, and the timesteps since the evaluation of the policy
-    #         obs = new_obs
-    #         episode_timesteps += 1
-    #         total_timesteps += 1
-    #         timesteps_since_eval += 1
-
-

@@ -31,8 +31,8 @@ class ReplayBuffer(object):
     else:
       self.storage.append(transition)
 
-    if len(self.storage) % 10 == 0:
-      print('Replay buffer size: ', len(self.storage))
+    # if len(self.storage) % 10 == 0:
+    #   print('Replay buffer size: ', len(self.storage))
 
   def sample(self, batch_size):
     ind = np.random.randint(0, len(self.storage), size=batch_size)
