@@ -168,7 +168,8 @@ def verify_train():
         action = np.random.randint(0, 3)
         env.step(action)
 
-def new_train(dt):
+#def new_train(dt):
+def new_train():
     print('New training....')
     global start_timesteps
     global replay_buffer
@@ -347,7 +348,8 @@ class CarApp(App):
         print('Evaluating Policy...')
         evaluations = [evaluate_policy(policy, eval_episodes=2)]
         print('Start Training...')
-        Clock.schedule_once(new_train)
+        #Clock.schedule_once(new_train)
+        new_train()
         print('Training Done!')
         #verify_train()
 

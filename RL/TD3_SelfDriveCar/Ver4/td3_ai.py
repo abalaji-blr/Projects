@@ -108,21 +108,23 @@ class Critic(nn.Module):
     x1 = F.relu(self.conv2(x1))
     x1 = F.relu(self.conv3(x1))
     x1 = F.softmax(self.gap1(x1))
-    x1 = torch.sum(x1 * u)
+    #x1 = torch.sum(x1 * u)
+    x1 = x1 * u
 
     # Forward-Propagation on the second Critic Neural Network
     x2 = F.relu(self.conv4(x))
     x2 = F.relu(self.conv5(x2))
     x2 = F.relu(self.conv6(x2))
     x2 = F.softmax(self.gap2(x2))
-    #print('x2:', x2)
-    #print('x2 shape:', x2.size())
-    #print('u:', u)
-    #print('u size:', u.size())
+    # print('x2:', x2)
+    # print('x2 shape:', x2.size())
+    # print('u:', u)
+    # print('u size:', u.size())
     #mul = x2 * u 
     #print('mul shape:', mul.size())
     #print(mul)
-    x2 = torch.sum(x2 * u)
+    #x2 = torch.sum(x2 * u)
+    x2 = x2 * u
     return x1, x2
 
   def Q1(self, x, u):
@@ -132,7 +134,11 @@ class Critic(nn.Module):
     x1 = F.relu(self.conv2(x1))
     x1 = F.relu(self.conv3(x1))
     x1 = F.softmax(self.gap1(x1))
-    x1 = torch.sum(x1 * u)
+    #x1 = torch.sum(x1 * u)
+    x1 = x1 * u
+    #print('x1: ', x1)
+    #print('u:', u)
+    #print('Q1-value: ', x1)
     return x1
 
 
