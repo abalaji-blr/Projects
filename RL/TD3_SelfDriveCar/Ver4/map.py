@@ -247,6 +247,40 @@ def new_train():
         total_timesteps += 1
         timesteps_since_eval += 1
 
+#----------------------------------------------------------------
+done_flag = True
+state = None
+
+def test_execute_action(dt):
+    global env
+    global done_flag
+    global policy
+    global state
+
+    if (done_flag == True):
+        state = env.reset()
+
+    action = policy.select_action(np.array(state))
+    action = np.argmax(action)  # convert the binary to decimal
+    #print('action: ', action)
+    state, reward, done_flag, _ = env.step(action)
+
+# def test(dt):
+#     global env
+
+#     state = env.reset()
+#     done = False
+#     print('STATE: ', state.shape)
+#     #print('State type:', state.type)
+#     # use the loaded models
+#     # while ( done != True):
+#     #     #for i in range(5):
+#     #     action = policy.select_action(np.array(state))
+#     #     action = np.argmax(action)  # convert the binary to decimal
+#     #     print('action: ', action)
+#     #     state, reward, done, _ = env.step(action)
+#         #time.sleep(1)
+#     Clock.schedule_interval(test_execute_action, 1)
 
 #----------------------------------------------------------------
 # Adding the painting tools
@@ -286,7 +320,6 @@ class MyPaintWidget(Widget):
 
 
 ##----------------------------------------------------------------
-
 
 
 
@@ -335,7 +368,7 @@ class CarApp(App):
         parent.add_widget(trainBtn)
 
         # Load Button
-        loadbtn = Button(text='load', pos=(parent.width, 0))
+        loadbtn = Button(text='Test', pos=(parent.width, 0))
         loadbtn.bind(on_release=self.load)
         parent.add_widget(loadbtn)
 
@@ -354,12 +387,20 @@ class CarApp(App):
         #verify_train()
 
     def load(self, obj):
-        print('Loading models...')
+        print('Test models...')
+        # load the models
+        global policy
+
         file_name = 'car_td3'
         policy = TD3(state_dim, action_dim, max_action)
-        policy.load(file_name, './pytorch_models/')
+        policy.load(
+            file_name, '/Users/abalaji/myData/RL/session10/att4/pytorch_models')
         _ = evaluate_policy(policy, eval_episodes=2)
-        print('Loading Done!')
+
+        #Clock.schedule_interval(test, 1.0/60.0)
+        Clock.schedule_interval(test_execute_action, 1.0/30.0)
+        #test()
+        print('Test mode Done!')
 
     def clear_canvas(self, obj):
         global sand
