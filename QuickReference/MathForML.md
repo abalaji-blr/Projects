@@ -1,12 +1,12 @@
 # Math For ML
 
-* Linear Algebra
+* [Linear Algebra](./MathForMLAlgebra)
 
 * Calculus
 
 * [Probability](./MathForMLProb.md)
 
-* Optimization
+* [Optimization](./MathForMLOpt)
 
   
 
