@@ -2,7 +2,7 @@
 
 * [Linear Algebra](./MathForMLAlgebra)
 
-* Calculus
+* [Calculus](./MathForMLCalculus)
 
 * [Probability](./MathForMLProb.md)
 
