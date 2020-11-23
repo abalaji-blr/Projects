@@ -103,7 +103,7 @@ By convention, most objective function in Machine Learning is to be **minimized*
 
 * Convex Set:
 
-  <iframe src="https://www.easycalculation.com/maths-dictionary/convex_set.html"> Convex Set
+  <iframe src="https://www.easycalculation.com/maths-dictionary/convex_set.html"><\iframe>
 
   *  
 
