@@ -108,7 +108,8 @@ By convention, most objective function in Machine Learning is to be **minimized*
 
   
 
-  
+  <blockquote class="embedly-card"><h4><a href="https://mathworld.wolfram.com/Convex.html">Convex</a></h4><p>A set in Euclidean space is convex set if it contains all the line segments connecting any pair of its points. If the set does not contain all the line segments, it is called concave. A convex set is always star convex, implying pathwise-connected, which in turn implies connected.</p></blockquote>
+  <script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
 
 ## Key Takeaways
 
