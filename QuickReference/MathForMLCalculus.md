@@ -66,4 +66,6 @@ The **Back Propagation** in Deep Neural Networks can make use of **automatic dif
 ## References
 
 * [Taylor Series - Math is Fun](https://www.mathsisfun.com/algebra/taylor-series.html)
+* [Examples for non-differential behaviour](https://ocw.mit.edu/ans7870/18/18.013a/textbook/HTML/chapter06/section03.html)
+* [Differential Functions, derivatives and Differentials](https://ocw.mit.edu/ans7870/18/18.013a/textbook/HTML/chapter06/contents.html)
 * 
