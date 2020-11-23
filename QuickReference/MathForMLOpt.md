@@ -95,12 +95,20 @@ By convention, most objective function in Machine Learning is to be **minimized*
 ## How to solve Continous constrained optimization problem?
 
 * Key words:
+
   * Convex set / function / optimization
   * Concave optimization
   * Duality
   * Legrange multiplier
+
 * Convex Set:
-  * [Convex Set picture](https://www.easycalculation.com/maths-dictionary/convex_set.html)
+
+  <iframe src="https://www.easycalculation.com/maths-dictionary/convex_set.html"> Convex Set
+
+  *  
+
+    
+
 * ![Convex Set:Picture](https://www.easycalculation.com/maths-dictionary/convex_set.html)
 
 ## Key Takeaways

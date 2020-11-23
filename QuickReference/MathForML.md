@@ -6,7 +6,7 @@
 
 * [Probability](./MathForMLProb.md)
 
-* [Optimization](./MathForMLOpt)
+* [Optimization](./MathForMLOpt.md)
 
   
 
