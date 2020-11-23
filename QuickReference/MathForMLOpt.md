@@ -103,13 +103,12 @@ By convention, most objective function in Machine Learning is to be **minimized*
 
 * Convex Set:
 
-  <iframe src="https://www.easycalculation.com/maths-dictionary/convex_set.html"><\iframe>
+  <blockquote class="embedly-card"><h4><a href="https://www.easycalculation.com/maths-dictionary/convex_set.html">What is convex set - Definition and Meaning</a></h4><p>A convex set is defined as the region, in which any two points lies within the region, while the points on the line segment which connect these points also lies within the region. If point lies outside the region, then it is a non convex set. Formula : A cube is a convex set.</p></blockquote>
+  <script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
 
-  *  
+  
 
-    
-
-* ![Convex Set:Picture](https://www.easycalculation.com/maths-dictionary/convex_set.html)
+  
 
 ## Key Takeaways
 
