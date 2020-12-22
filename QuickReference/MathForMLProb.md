@@ -41,7 +41,7 @@ The following are the *properties* or *moments* of the distribution.
   * Binomial Distribution: Multiple independent Bernoulli trials.
     * A sequence of multiple independent coin flips.
 * Multinomial Distribution
-* Possion Distribution [*For Poisson Distribution - Mean and Variance are same*]
+* Possion Distribution [*For Possion Distribution - Mean and Variance are same*]
 
 
 

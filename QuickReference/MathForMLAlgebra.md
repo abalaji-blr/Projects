@@ -42,7 +42,7 @@ The dimension of the vector space depends on the number of **basis vectors**.
 
 ## Orthogonal and Orthonormal Vectors
 
-**Orthogoanl Vector:** When two vectors are perpendicular, i.e.., angle between them is 90 degress. They are said to be **orthogonal vectors**. The dot product of two vectors is zero.
+**Orthogonal Vector:** When two vectors are perpendicular, i.e.., angle between them is 90 degress. They are said to be **orthogonal vectors**. The dot product of two vectors is zero.
 
 **Orthonormal Vector:** When two vectors are perpendicular and their magnitude is 1.
 
@@ -54,7 +54,7 @@ The dimension of the vector space depends on the number of **basis vectors**.
 
 **Determinants** are only defined for **square** matrices. i.e., same number of rows and columns.
 
-**Determinant** is a **scalar** value computed from the  **square matrix** and it encodes certain properties of linear transformation. It's represented by **det(A) or |A|**. 
+**Determinant** is a **scalar** value computed from the  **square matrix** and it *encodes certain properties of linear transformation*. It's represented by **det(A) or |A|**. 
 
 Geometrically, it can be viewed as **volume scaling** factor of the linear transformation described by the matrix. The determinant is **positive or negative** according to whether the linear transformation **preserves or reverses** the orientation of a real vector space.
 
