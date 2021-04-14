@@ -44,7 +44,13 @@ The dimension of the vector space depends on the number of **basis vectors**.
 
 **Orthogonal Vector:** When two vectors are perpendicular, i.e.., angle between them is 90 degress. They are said to be **orthogonal vectors**. The dot product of two vectors is zero.
 
-**Orthonormal Vector:** When two vectors are perpendicular and their magnitude is 1.
+**Orthonormal Vector:** When two vectors are perpendicular and their magnitude is 1. i.e., the vectors are **normalized**, ie., the length of each vector is **one**.
+
+[Refer to Khan Academy Video](https://www.youtube.com/watch?v=7BFx8pt2aTQ)
+
+[Professor Dave Explains](https://www.youtube.com/watch?v=6nqMegdbxik)
+
+
 
 ---
 
