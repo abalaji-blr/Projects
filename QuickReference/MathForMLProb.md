@@ -6,7 +6,7 @@
 
 ### What is Probability?
 
-Probability is study about **randomness**. 
+Probability is study about **randomness** / **uncertainity**. 
 
 The *probability* is a number which defines the **chance** or the **likelihood** of a particular event's occurrence.
 
@@ -87,7 +87,7 @@ The **Probability Mass Function (PMF)** returns the probability of a given outco
 
 The relationship between the events of a continuous random variable and their probabilties is called Continuous Probability Distribution . It's summarized by *Probability Density Function*.
 
-- Parametric Distribution
+- **Parametric Distribution**
 
   The following are the **parameters** present in a continuous distribution (**one or more but not all parameters**). 
 
@@ -102,7 +102,7 @@ The relationship between the events of a continuous random variable and their pr
   - **Standard Normal Distribution** : $\mu$ = 0 and $\sigma$ = 1. This is also called as **standarization**.
   - Pareto Distribution - (*80/20*)
 
-- Non-Parametric Distribution
+- **Non-Parametric Distribution**
 
   The following are some **non-parameteric** distribution. They are formed on the basis of **normal distribution**.
 
@@ -210,11 +210,15 @@ Broadly they are classified as:
 
 * Non Parametric Tests
 
-  
 
-A Type I error occurs when you **reject** a null hypothesis that in fact is **TRUE**. This is also called as **level of significance** represented as **$\alpha$. ** Usually it's 0.05 or 0.1.
 
-A Type II error occurs when you **do not reject** a null hypothesis that is in fact **FALSE**. It's represented as **$\beta$**.
+---
+
+#### Errors in Hypothesis Testing
+
+A **Type I** (aka **false alarm**) error occurs when you **reject** a null hypothesis that in fact is **TRUE**. This is also called as **level of significance** represented as **$\alpha$. ** Usually it's 0.05 or 0.1.
+
+A **Type II** (aka **missed detection**) error occurs when you **do not reject** a null hypothesis that is in fact **FALSE**. It's represented as **$\beta​$**.
 
 ---
 
@@ -222,17 +226,17 @@ A Type II error occurs when you **do not reject** a null hypothesis that is in f
 
 Let's assume the random variables are X and Y and the event A is for X and event B for Y.
 
-* Joint Probability
+* **Joint Probability**
   * Probability of **two (or more) events occuring simultanously**.
   * $P(A \and B) = P(A \| B) * P(B)​$
   * $P(A\and B)$ is the **joint probability of events A and B**.
   * $P(A\| B)$ is the **conditional probability** 
   * It's also called as  **product rule** of probability.
-* Marginal Probability
+* **Marginal Probability**
   * Probability of an **event (of a random variable)** irrespective of the outcomes of **other variables**.
   * It's **sum (or union)** over all probabilities of all events of the second variable for a **given fixed event** for a first variable.
   * It's also called as **sum rule** of probability.
-* Conditional Probability
+* **Conditional Probability**
   * Probability of an **event** occurring in the presence of **one or more other events**.
   * $P(A\| B) = P(A \and B) \div P(B) \\  => P(A\|B) = \frac{ P(B\|A) * P(A) }{ P(B)}$
   * This is the **Bayes Theorem**.
