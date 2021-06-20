@@ -244,6 +244,28 @@ Let's assume the random variables are X and Y and the event A is for X and event
 
 ---
 
+### Correlation
+
+Correlation is a **statistical measure** of an association **relationship between two random variables**. It's **NOT a causal relationship**. 
+
+Given the dataset, need to find out the **two random variables (aka features)** which will have high correlation coefficient value and they may **not** be any direct dependence between them. In other words, we need to find **two independent features** which have a high relationship.
+
+There are two kinds of Correlation coefficient:
+
+* **Pearson Correlation Coefficient**
+
+  This measures the **linear relationship** and may not captures **non-linear** relationship.
+
+  The coefficient lies between -1 and  +1.
+
+  The peason correlation coefficient may be *ZERO* even when there is a strong non-linear relationship between variables X and Y.
+
+* **Spearman Rank Correlation Coefficient**
+
+  When **two** random variables are of **ordinal (aka ranked / ordered )** type, **Spearman rank correlation** is used.
+
+---
+
 ### Probability Density Estimation
 
 Given a *random sample of a variable*, we are trying to identify the *probability distribution for a random variable*. **Note that often times, we may not know the PDF for a random variable and we may not have all the possible outcomes**.
