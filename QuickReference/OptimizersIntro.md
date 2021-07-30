@@ -1,5 +1,29 @@
 [TOC]
 
+# What is Optimization?
+
+Optimization is a process of selecting the **best feasible solution** among the possible alternatives for a given criteria.
+
+Usually, the  **objective function** is defined and the **optimization** tries to find the **set of inputs** to the objective funtion that results in a **maximum or minimum** in funtion evaluation.
+
+---
+
+# How to classify Optimization Algorithm?
+
+There are many ways to classify the optimization algorithm. One way to differentiate is - **whether the objective function is differentiable or not**. 
+
+In other words, whether we can find **derivatives** (aka slope) or not.
+
+In the case of multi-variate objective function, the derivatives are called as **gradient** (aka partial derivatives).
+
+Some optimization algorithm uses - **First order derivatives**, whereas some other uses **second order derivatives** as well.
+
+In the case of multi variate, the first order derivative (aka gradient aka partial derivative) is called as **Jacobian Matrix**, where as the **second order derivative** is called as **Hessian Matrix**.
+
+---
+
+
+
 # About Optimizers and their parameters
 
 The **objective** of the optimizer is to **find out optimal weights** for a model for the given inputs (in our case, they are bunch of images).
@@ -41,19 +65,40 @@ It calculates the **gradient** of the **whole dataset** and updates the weights 
 
 Instead of the whole dataset, the **weights / parameters** are updated for a **batch** of images. This makes the training process **faster** when compared with GD.
 
+- Momentum
+- Nesterov's Acceleration.
+
+- ### Regularization / Weight Decay
+
+  If the model remembers the training data / features, it can work well with the training dataset but when it sees the unknown test data, the test accuracy may not be same / higher than the traning accuracy. The reason being, the **model just remembered** the training data (and technically did not learn well, also called as **overfitting**) and it **did not generalize** well for any test data. In other words, the model did not have the **capacity** to predict accurately.
+
+  To increase the **capacity**, **regularization** is used. It's also known as **weight decay**. This will make the model **generalize** well for the unseen data. 
+
+  Note that too much of regularization may result in **underfitting**.
+
+  What kind of regularization available?
+
+  - L1
+  - L2
+
+  Basically, before doing the weight update, find out the **penalty** and subtract them. There is a hyper parameter associated with it called $\lambda$.
+
+  While defining the NN architecture, we can **explicitly** add regularization using **dropout**. At times, it can be **implicitly** implemented using **image augmentation** and **early stopping**.
+
+
+
 Further, the training process can be improved with help of other **hyper parameters** - momentum and Learning Rate finder.
 
 The following are the hyper parameters:
 
  * learning rate - lr  ($ \alpha$)
-
  * momentum ($\beta$)
-
- * decay
-
+ * decay ($\lambda$)
  * nestrerov
 
-   
+----
+
+
 
 ## RMS Prop
 
@@ -87,9 +132,10 @@ If the learning rate is small, the training process will be slow. If the learnin
  * Cyclical LR (CLR)
  * OneCycle
 
-## Blog
+# Blog / Resources
 
 * [Keras - LR Finder](<https://github.com/surmenok/keras_lr_finder/blob/master/keras_lr_finder/lr_finder.py>)
 * [Optimizer - Excellent source](<http://ruder.io/optimizing-gradient-descent/index.html#whichoptimizertochoose>)
 * [Paper: Don't decay the Learning rate, increase batch size.](<https://arxiv.org/pdf/1711.00489v2.pdf>)
-* 
+* [How to choose Optimization Algorithm : Learning Mastery](https://machinelearningmastery.com/tour-of-optimization-algorithms/)
+

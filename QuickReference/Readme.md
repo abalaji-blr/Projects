@@ -17,6 +17,7 @@
 ## Deep Learning
 
 * [Key Terms : Convolution | Receptive Field](https://github.com/abalaji-blr/Projects/blob/master/QuickReference/DeepLearningKeyTerms.md)
+* [About Optimization](./Optimizers.md)
 * [BackPropagation Step by Step](https://github.com/abalaji-blr/Projects/blob/master/QuickReference/BackpropagationStepbyStep_Balaji.md)
 * [Deep Learning Resources - Blog | Video | etc ](https://github.com/abalaji-blr/Projects/blob/master/QuickReference/DLResources.md)
 
