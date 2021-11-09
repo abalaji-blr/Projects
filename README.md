@@ -26,14 +26,5 @@
 
 * [Markov Process, Policy Gradient, Deep Deterministic Policy Gradient](https://github.com/abalaji-blr/Projects/tree/master/RL)
 
-  
 
-## Opencv
-
-## Quick References
-  * Sci Kit Intro
-  * Keras Intro
-  * Random Number Generation
-  * Numpy functions
-  * Pandas functions
 
