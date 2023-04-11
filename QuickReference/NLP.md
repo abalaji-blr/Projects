@@ -110,9 +110,12 @@ Overall, the attention mechanism has proven to be effective in NLP tasks, allowi
 
 **Transformer models are faster to train**.
 
-[Transformer Architecture : YouTube](https://www.youtube.com/watch?v=H39Z_720T5s&list=PLo2EIpI_JMQtNtKNFFSMNIZwspj8H7-sQ&index=5)
+Some Resources to get you started on Transformers:
 
-[About GPT, ChatGPT etc.](https://lifearchitect.ai/chatgpt/)
+* [Step by Step explaination of Transformer Architecture | YouTube Video - A.I. Hacker Michal Pai](https://youtu.be/4Bdc55j80l8)
+* [Transformer Architecture : YouTube](https://www.youtube.com/watch?v=H39Z_720T5s&list=PLo2EIpI_JMQtNtKNFFSMNIZwspj8H7-sQ&index=5)
+
+* [About GPT, ChatGPT etc.](https://lifearchitect.ai/chatgpt/)
 
 Which is better - BERT or GPT?
 
