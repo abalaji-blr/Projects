@@ -30,3 +30,7 @@
 
 ### How to Approach Image Classification problem?
 ### How to improve the accuracy?
+
+## Agentic AI
+  * [About Agentic AI](./AgenticAI.md)
+    
