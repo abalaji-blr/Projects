@@ -69,6 +69,11 @@
          * **SFT** involved training the model with explicit instruction-following data. Researchers curated datasets where human responses were directly associated with specific queries. This helped Models understand the structure of proper responses.
          * **RLHF** further refined these responses by incorporating human preferences. AI models were fine-tuned based on which response humans rated as better, ensuring more coherent and relevant replies.
 
+   * [ADVANCES AND CHALLENGES IN FOUNDATION AGENTS:
+FROM BRAIN-INSPIRED INTELLIGENCE TO EVOLUTIONARY, COLLABORATIVE, AND SAFE SYSTEMS](https://arxiv.org/pdf/2504.01990)
+      * [Github location](https://github.com/FoundationAgents/awesome-foundation-agents)
+        
+
 ## About Agents in AI
 As LLMs became more capable, new challenges arose. Users started expecting AI to handle factual and real-time queries, such as:
 
